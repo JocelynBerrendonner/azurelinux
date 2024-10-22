@@ -12,6 +12,10 @@ Source0:        https://github.com/fwupd/fwupd/releases/download/%{version}/%{na
 ## (rpmautospec version 0.7.3)
 ## RPMAUTOSPEC: autorelease, autochangelog
 %define autorelease(e:s:pb:n) %{?-p:0.}%{lua:
+    release_number = 1;
+    base_release_number = tonumber(rpm.expand("%{?-b*}%{!?-b:1}"));
+    print(release_number + base_release_number - 1);
+}%{?-e:.%{-e*}}%{?-s:.%{-s*}}%{!?-n:%{?dist}}
 ## END: Set by rpmautospec
 %global glib2_version 2.45.8
 %global libxmlb_version 0.1.3
@@ -53,41 +57,37 @@ Source0:        https://github.com/fwupd/fwupd/releases/download/%{version}/%{na
 BuildRequires:  gettext
 BuildRequires:  gi-docgen
 BuildRequires:  git-core
-BuildRequires:  glib2-devel >= %{glib2_version}
+BuildRequires:  glib2-devel
 BuildRequires:  gnutls-devel
 BuildRequires:  gnutls-utils
 BuildRequires:  gobject-introspection-devel
-BuildRequires:  json-glib-devel >= %{json_glib_version}
+BuildRequires:  json-glib-devel
 BuildRequires:  libarchive-devel
 BuildRequires:  libcbor-devel
-BuildRequires:  libcurl-devel >= %{libcurl_version}
+BuildRequires:  libcurl-devel
 BuildRequires:  libdrm-devel
-BuildRequires:  libjcat-devel >= %{libjcat_version}
-BuildRequires:  libusb1-devel >= %{libusb_version}
-BuildRequires:  libxmlb-devel >= %{libxmlb_version}
+BuildRequires:  libjcat-devel
+BuildRequires:  libusb1-devel
+BuildRequires:  libxmlb-devel
 BuildRequires:  meson
 BuildRequires:  pkg-config
-BuildRequires:  polkit-devel >= 0.103
+BuildRequires:  polkit-devel
 BuildRequires:  protobuf-c-devel
 BuildRequires:  python3-jinja2
 BuildRequires:  python3-packaging
 BuildRequires:  sqlite-devel
-BuildRequires:  systemd >= %{systemd_version}
+BuildRequires:  systemd
 BuildRequires:  systemd-devel
 BuildRequires:  vala
 BuildRequires:  pkgconfig(bash-completion)
-Requires:       glib2%{?_isa} >= %{glib2_version}
-Requires:       libusb1%{?_isa} >= %{libusb_version}
-Requires:       libxmlb%{?_isa} >= %{libxmlb_version}
+Requires:       glib2%{?_isa}
+Requires:       libusb1%{?_isa}
+Requires:       libxmlb%{?_isa}
 Requires:       shared-mime-info
 Requires(post): systemd
 Requires(postun): systemd
 Requires(preun): systemd
 Provides:       dbxtool
-    release_number = 1;
-    base_release_number = tonumber(rpm.expand("%{?-b*}%{!?-b:1}"));
-    print(release_number + base_release_number - 1);
-}%{?-e:.%{-e*}}%{?-s:.%{-s*}}%{!?-n:%{?dist}}
 %if 0%{?have_passim}
 BuildRequires:  passim-devel
 %endif
@@ -96,12 +96,12 @@ BuildRequires:  valgrind
 BuildRequires:  valgrind-devel
 %endif
 %if 0%{?have_flashrom}
-BuildRequires:  flashrom-devel >= 1.2-2
+BuildRequires:  flashrom-devel
 %endif
 %if 0%{?have_modem_manager}
-BuildRequires:  ModemManager-glib-devel >= 1.10.0
+BuildRequires:  ModemManager-glib-devel
 BuildRequires:  libmbim-devel
-BuildRequires:  libqmi-devel >= 1.22.0
+BuildRequires:  libqmi-devel
 %endif
 %if 0%{?have_uefi}
 BuildRequires:  cairo-devel
@@ -113,7 +113,7 @@ BuildRequires:  pango-devel
 BuildRequires:  python3
 BuildRequires:  python3-cairo
 BuildRequires:  python3-gobject
-BuildRequires:  tpm2-tss-devel >= 2.2.3
+BuildRequires:  tpm2-tss-devel
 %endif
 
 %description

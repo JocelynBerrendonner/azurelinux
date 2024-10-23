@@ -8,15 +8,6 @@ Distribution:   Azure Linux
 URL:            https://github.com/fwupd/fwupd
 Source0:        https://github.com/fwupd/fwupd/releases/download/%{version}/%{name}-%{version}.tar.xz
 
-## START: Set by rpmautospec
-## (rpmautospec version 0.7.3)
-## RPMAUTOSPEC: autorelease, autochangelog
-%define autorelease(e:s:pb:n) %{?-p:0.}%{lua:
-    release_number = 1;
-    base_release_number = tonumber(rpm.expand("%{?-b*}%{!?-b:1}"));
-    print(release_number + base_release_number - 1);
-}%{?-e:.%{-e*}}%{?-s:.%{-s*}}%{!?-n:%{?dist}}
-## END: Set by rpmautospec
 %global glib2_version 2.45.8
 %global libxmlb_version 0.1.3
 %global libusb_version 1.0.9
@@ -108,7 +99,7 @@ BuildRequires:  cairo-devel
 BuildRequires:  cairo-gobject-devel
 BuildRequires:  fontconfig
 BuildRequires:  freetype
-BuildRequires:  google-noto-sans-cjk-ttc-fonts
+#BuildRequires:  google-noto-sans-cjk-ttc-fonts
 BuildRequires:  pango-devel
 BuildRequires:  python3
 BuildRequires:  python3-cairo
@@ -122,8 +113,6 @@ fwupd is a daemon to allow session software to update device firmware.
 %package devel
 Summary:        Development package for %{name}
 Requires:       %{name}%{?_isa} = %{version}-%{release}
-Obsoletes:      libebitdo-devel < 0.7.5-3
-Obsoletes:      libdfu-devel < 1.0.0
 
 %description devel
 Files for development with %{name}.

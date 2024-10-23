@@ -1,12 +1,3 @@
-## START: Set by rpmautospec
-## (rpmautospec version 0.6.5)
-## RPMAUTOSPEC: autorelease, autochangelog
-%define autorelease(e:s:pb:n) %{?-p:0.}%{lua:
-    release_number = 3;
-    base_release_number = tonumber(rpm.expand("%{?-b*}%{!?-b:1}"));
-    print(release_number + base_release_number - 1);
-}%{?-e:.%{-e*}}%{?-s:.%{-s*}}%{!?-n:%{?dist}}
-## END: Set by rpmautospec
 Summary:        Documentation tool for GObject-based libraries
 Name:           gi-docgen
 Version:        2024.1

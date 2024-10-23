@@ -1,0 +1,9 @@
+{
+ "Signatures": {
+  "breathe-4.35.0.tar.gz": "55b54723752fc04b892a0f868782b1df65e69db6ca94fb32cf04be495bfd7841",
+  "956.patch": "c63e2a1d76b7a79dc2fb6431d9ddcf759abbe55c4b4206126fd8dc04872268d1",
+  "964.patch": "5761275345e6b90695da7be7f4ed51280e5564ee6269bf45c42764ea85470e9d",  
+  "breathe-4.35.0.tar.gz.sig": "6a3e8159617f5c58f34b056077adc3aaf36c40b31af22b2cacf485ef6d433806",
+  "vermware.key": "284f96bb50e89b746a67dd2ec65b0eab8612a3ec98967f901ffc710961feb58c"
+ }
+}

@@ -31,6 +31,7 @@ BuildRequires:  gnupg2
 BuildRequires:  make
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-sphinxcontrib-jquery
 BuildArch:      noarch
 
 # Set the name of the documentation directory

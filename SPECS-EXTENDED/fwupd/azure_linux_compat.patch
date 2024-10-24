@@ -1,0 +1,22 @@
+diff --git a/meson.build b/meson.build
+index 250b76107..3a8d7e3c7 100644
+--- a/meson.build
++++ b/meson.build
+@@ -222,14 +222,9 @@ hsi = get_option('hsi').disable_auto_if(host_machine.system() != 'linux').disabl
+ if hsi
+   conf.set('HAVE_HSI', '1')
+ endif
+-libxmlb = dependency('xmlb', version: '>= 0.3.19', fallback: ['libxmlb', 'libxmlb_dep'])
+-if libxmlb.get_variable('zstd') == 'true'
+-  lvfs_metadata_format = 'zst'
+-elif libxmlb.get_variable('lzma') == 'true'
+-  lvfs_metadata_format = 'xz'
+-else
+-  lvfs_metadata_format = 'gz'
+-endif
++libxmlb = dependency('xmlb')
++lvfs_metadata_format = 'gz'
++
+ conf.set_quoted('FU_LVFS_METADATA_FORMAT', lvfs_metadata_format)
+ 
+ # FreeBSD is missing some libusb symbols

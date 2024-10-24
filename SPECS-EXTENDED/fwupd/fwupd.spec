@@ -7,6 +7,8 @@ Vendor:         Microsoft Corporation
 Distribution:   Azure Linux
 URL:            https://github.com/fwupd/fwupd
 Source0:        https://github.com/fwupd/fwupd/releases/download/%{version}/%{name}-%{version}.tar.xz
+#Patch the source files to tolerate a slightly older version of libxmlb.
+#Patch0:         azure_linux_compat.patch
 
 %global glib2_version 2.45.8
 %global libxmlb_version 0.1.3
@@ -15,13 +17,14 @@ Source0:        https://github.com/fwupd/fwupd/releases/download/%{version}/%{na
 %global libjcat_version 0.1.0
 %global systemd_version 249
 %global json_glib_version 1.1.1
+%global bash_completionsdir %(pkg-config --variable=completionsdir bash-completion 2>/dev/null || echo '%{_sysconfdir}/bash_completion.d')
+
 # although we ship a few tiny python files these are utilities that 99.99%
 # of users do not need -- use this to avoid dragging python onto CoreOS
 %global __requires_exclude ^%{python3}$
-# PPC64 is too slow to complete the tests under 3 minutes...
-%ifnarch ppc64le
-%global enable_tests 1
-%endif
+%global enable_tests 0
+%global enable_docs 0
+
 %global enable_dummy 1
 # fwupd.efi is only available on these arches
 %ifarch x86_64 aarch64 riscv64
@@ -45,8 +48,11 @@ Source0:        https://github.com/fwupd/fwupd/releases/download/%{version}/%{na
 # only available recently
 %global have_modem_manager 1
 %global have_passim 1
+BuildRequires:  freefont
 BuildRequires:  gettext
+%if 0%{?enable_docs}
 BuildRequires:  gi-docgen
+%endif
 BuildRequires:  git-core
 BuildRequires:  glib2-devel
 BuildRequires:  gnutls-devel
@@ -57,8 +63,10 @@ BuildRequires:  libarchive-devel
 BuildRequires:  libcbor-devel
 BuildRequires:  libcurl-devel
 BuildRequires:  libdrm-devel
+BuildRequires:  libjcat
 BuildRequires:  libjcat-devel
 BuildRequires:  libusb1-devel
+BuildRequires:  libxmlb
 BuildRequires:  libxmlb-devel
 BuildRequires:  meson
 BuildRequires:  pkg-config
@@ -163,7 +171,12 @@ or server machines.
 
 %meson \
     -Dumockdev_tests=disabled \
+%if 0%{?enable_docs}
     -Ddocs=enabled \
+%else
+    -Ddocs=disabled \
+%endif
+    -Dlvfs=disabled \
 %if 0%{?enable_tests}
     -Dtests=true \
 %else
@@ -262,8 +275,8 @@ mkdir -p %{buildroot}%{_localstatedir}/cache/fwupd
 %{_libdir}/modules-load.d/fwupd-msr.conf
 %endif
 %{_datadir}/dbus-1/system.d/org.freedesktop.fwupd.conf
-%{_datadir}/bash-completion/completions/fwupdmgr
-%{_datadir}/bash-completion/completions/fwupdtool
+%{bash_completionsdir}/fwupdmgr
+%{bash_completionsdir}/fwupdtool
 %{_datadir}/fish/vendor_completions.d/fwupdmgr.fish
 %dir %{_datadir}/fwupd
 %dir %{_datadir}/fwupd/metainfo
@@ -294,7 +307,9 @@ mkdir -p %{buildroot}%{_localstatedir}/cache/fwupd
 %dir %{_localstatedir}/cache/fwupd
 %dir %{_datadir}/fwupd/quirks.d
 %{_datadir}/fwupd/quirks.d/builtin.quirk.gz
+%if 0%{?enable_docs}
 %{_docdir}/fwupd/*.html
+%endif
 %if 0%{?have_uefi}
 %config(noreplace)%{_sysconfdir}/grub.d/35_fwupd
 %endif
@@ -322,10 +337,12 @@ mkdir -p %{buildroot}%{_localstatedir}/cache/fwupd
 
 %files devel
 %{_datadir}/gir-1.0/Fwupd-2.0.gir
+%if 0%{?enable_docs}
 %{_docdir}/fwupd/libfwupdplugin
 %{_docdir}/fwupd/libfwupd
 %{_docdir}/libfwupdplugin
 %{_docdir}/libfwupd
+%endif
 %{_datadir}/vala/vapi
 %{_includedir}/fwupd-3
 %{_libdir}/libfwupd*.so
